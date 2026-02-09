@@ -2,13 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class AuthUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=150, unique=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
     ROLE_CHOICES = [
         ('customer', 'Customer'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
 
     def __str__(self):
-        return f"{self.username} - {self.role}"
+        return f"{self.email} - {self.role}"
 
 
 class Product(models.Model):

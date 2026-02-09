@@ -11,8 +11,9 @@ urlpatterns = [
     path('login/', views.admin_login_view, name='admin_login'),
     path('logout/', views.admin_logout_view, name='admin_logout'),
     
+    path('', include('customer.urls')),
     # Admin Dashboard
-    path('', views.admin_dashboard, name='admin_dashboard'),
+    #path('', views.admin_dashboard, name='admin_dashboard'),
     path('dashboard/', views.admin_dashboard, name='admin_dashboard_alt'),
 
     # Vendor Request Management
