@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Status - E-Commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .status-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .status-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .status-pending .status-icon {
+            color: #f59e0b;
+        }
+        
+        .status-approved .status-icon {
+            color: #10b981;
+        }
+        
+        .status-rejected .status-icon {
+            color: #ef4444;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .status-message {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .shop-info {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .shop-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: #333;
+        }
+        
+        .rejection-reason {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .action-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        {% if status == 'pending' %}
+        <div class="status-pending">
+            <div class="status-icon">⏳</div>
+            <h1>Approval Pending</h1>
+            <p class="status-message">
+                Your shop registration is under review by our admin team. This typically takes 1-2 business days.
+            </p>
+        </div>
+        {% elif status == 'approved' %}
+        <div class="status-approved">
+            <div class="status-icon">✅</div>
+            <h1>Approved!</h1>
+            <p class="status-message">
+                Congratulations! Your shop has been approved. You can now add products and manage your business.
+            </p>
+            <a href="{% url 'vendor_home' %}" class="action-btn">Go to Dashboard</a>
+        </div>
+        {% elif status == 'rejected' %}
+        <div class="status-rejected">
+            <div class="status-icon">❌</div>
+            <h1>Application Rejected</h1>
+            <p class="status-message">
+                Unfortunately, your shop registration was not approved.
+            </p>
+            {% if rejection_reason %}
+            <div class="rejection-reason">
+                <strong>Reason:</strong> {{ rejection_reason }}
+            </div>
+            {% endif %}
+            <p style="margin-top: 20px; color: #666; font-size: 14px;">
+                Please contact support for more information.
+            </p>
+        </div>
+        {% endif %}
+        
+        <div class="shop-info">
+            <h3>Shop Details</h3>
+            <div class="info-row">
+                <span class="info-label">Shop Name:</span>
+                <span class="info-value">{{ vendor.shop_name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Business Type:</span>
+                <span class="info-value">{{ vendor.get_business_type_display }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Submission Date:</span>
+                <span class="info-value">{{ vendor.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+        
+        <a href="{% url 'logout' %}" style="margin-top: 20px; display: inline-block; color: #667eea; text-decoration: none; font-size: 14px;">
+            ← Back
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Address Page</title>
+    <style>
+        body{
+            font-family: Arial;
+            background:#f4f4f4;
+            padding:40px;
+        }
+
+        .container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            margin-bottom:15px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        input, textarea{
+            width:100%;
+            padding:10px;
+            margin-top:8px;
+            border-radius:6px;
+            border:1px solid #ccc;
+        }
+
+        button{
+            padding:10px 20px;
+            background:#059669;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        .delete{
+            background:red;
+            text-decoration:none;
+            padding:6px 12px;
+            color:white;
+            border-radius:6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Select Delivery Address</h2>
+
+    <!-- SAVED ADDRESSES -->
+    {% for addr in addresses %}
+    <div class="card">
+        <b>{{ addr.name }}</b><br>
+        {{ addr.address }}, {{ addr.city }}<br>
+        {{ addr.phone }}
+
+        <br><br>
+        <a href="{% url 'delete_address' addr.id %}" class="delete">Delete</a>
+    </div>
+    {% empty %}
+    <p>No saved addresses yet.</p>
+    {% endfor %}
+
+
+    <!-- ADD ADDRESS FORM -->
+    <div class="card">
+        <h3>Add New Address</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.name.label }} {{ form.name }}
+            {{ form.phone.label }} {{ form.phone }}
+            {{ form.pincode.label }} {{ form.pincode }}
+            {{ form.city.label }} {{ form.city }}
+            {{ form.state.label }} {{ form.state }}
+            {{ form.address.label }} {{ form.address }}
+
+            <br><br>
+            <button type="submit">Save Address</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

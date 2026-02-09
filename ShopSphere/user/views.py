@@ -3,9 +3,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login ,logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import AuthUser, Product, Cart, CartItem, Order, OrderItem
+from .models import AuthUser, Product, Cart, CartItem, Order, OrderItem, Address
 from .serializers import RegisterSerializer, ProductSerializer, CartItemSerializer, OrderSerializer
+from .forms import AddressForm
 
 # 🔹 REGISTER
 @api_view(['GET', 'POST'])
@@ -236,3 +238,28 @@ def my_orders(request):
 def logout_api(request):
     logout(request)
     return redirect('login')
+
+def address_page(request):
+
+    addresses = Address.objects.filter(user=request.user)
+
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return redirect("address_page")
+    else:
+        form = AddressForm()
+
+    return render(request, "address.html", {
+        "form": form,
+        "addresses": addresses
+    })
+
+def delete_address(request, id):
+    addr = get_object_or_404(Address, id=id, user=request.user)
+    addr.delete()
+    return redirect('address_page')

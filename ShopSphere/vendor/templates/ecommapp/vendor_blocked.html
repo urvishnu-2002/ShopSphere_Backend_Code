@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Blocked - E-Commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .blocked-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .blocked-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #ef4444;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+        
+        .blocked-message {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        .blocked-info {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .blocked-info h3 {
+            color: #991b1b;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .blocked-info p {
+            color: #7f1d1d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .contact-support {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .contact-support h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .contact-support p {
+            color: #1e3a8a;
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="blocked-container">
+        <div class="blocked-icon">🚫</div>
+        <h1>Account Blocked</h1>
+        <p class="blocked-message">
+            Your vendor account has been blocked and you cannot access the platform at this time.
+        </p>
+        
+        {% if vendor.blocked_reason %}
+        <div class="blocked-info">
+            <h3>Reason:</h3>
+            <p>{{ vendor.blocked_reason }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="contact-support">
+            <h3>📞 Need Help?</h3>
+            <p>
+                If you believe this is a mistake or have any questions, please contact our support team at support@ecommerce.com
+            </p>
+        </div>
+        
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</body>
+</html>

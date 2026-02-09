@@ -1,0 +1,9 @@
+<h2>Enter Activation Code</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  <input type="text" name="code" placeholder="Enter code">
+  <button type="submit">Activate</button>
+</form>
+
+<p style="color:red">{{ error }}</p>

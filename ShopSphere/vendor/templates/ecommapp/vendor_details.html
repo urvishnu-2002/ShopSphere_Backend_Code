@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Details - E-Commerce Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 550px;
+            padding: 40px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1>💼 Complete Your Shop Profile</h1>
+            <p>Tell us about your business</p>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="shop_name">Shop Name</label>
+                <input type="text" id="shop_name" name="shop_name" required placeholder="Your shop/business name">
+            </div>
+            
+            <div class="form-group">
+                <label for="shop_description">Shop Description</label>
+                <textarea id="shop_description" name="shop_description" required placeholder="Describe your business and products..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" required placeholder="Business address"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="business_type">Business Type</label>
+                    <select id="business_type" name="business_type" required>
+                        <option value="">Select Business Type</option>
+                        <option value="retail">Retail</option>
+                        <option value="wholesale">Wholesale</option>
+                        <option value="manufacturer">Manufacturer</option>
+                        <option value="service">Service</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_type">ID Type</label>
+                    <select id="id_type" name="id_type" required>
+                        <option value="">Select ID Type</option>
+                        <option value="gst">GST</option>
+                        <option value="pan">PAN</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_number">GST/PAN Number</label>
+                <input type="text" id="id_number" name="id_number" required placeholder="Your GST or PAN number">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_proof_file">ID Proof Document</label>
+                <input type="file" id="id_proof_file" name="id_proof_file" required accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+            
+            <button type="submit" class="submit-btn">Complete Registration</button>
+        </form>
+    </div>
+</body>
+</html>

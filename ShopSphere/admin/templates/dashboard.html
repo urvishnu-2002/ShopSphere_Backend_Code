@@ -1,0 +1,16 @@
+<h2>Admin Dashboard</h2>
+
+{% for v in vendors %}
+  <p>
+    {{ v.shop_name }} -
+    {% if v.is_approved %}
+        ACTIVE
+    {% else %}
+        PENDING |
+        Code: {{ v.activation_code }}
+        <a href="{% url 'generate_code' v.id %}">
+            Generate Code
+        </a>
+    {% endif %}
+  </p>
+{% endfor %}

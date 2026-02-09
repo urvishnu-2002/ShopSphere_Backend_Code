@@ -1,0 +1,31 @@
+<h2>Vendor Business Details</h2>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <input type="text" name="shop_name" placeholder="Shop Name" required><br>
+
+  <textarea name="shop_description" placeholder="Shop Description" required></textarea><br>
+
+  <textarea name="address" placeholder="Address" required></textarea><br>
+
+  <select name="business_type" required>
+    <option value="">Select Business Type</option>
+    <option value="retail">Retail</option>
+    <option value="wholesale">Wholesale</option>
+    <option value="manufacturer">Manufacturer</option>
+    <option value="service">Service</option>
+  </select><br>
+
+  <select name="id_type" required>
+    <option value="">GST or PAN</option>
+    <option value="gst">GST</option>
+    <option value="pan">PAN</option>
+  </select><br>
+
+  <input type="text" name="id_number" placeholder="GST/PAN Number" required><br>
+
+  <input type="file" name="id_proof_file" required><br>
+
+  <button type="submit">Complete Registration</button>
+</form>

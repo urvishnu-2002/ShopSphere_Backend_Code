@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopsphere - Partner Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .brand-purple { background-color: #5D56D1; }
+        .text-purple { color: #5D56D1; }
+        .bg-soft-gray { background-color: #F8F9FC; }
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #5D56D1; border-radius: 20px; }
+
+        /* Updated Input Styling */
+        input, select {
+            width: 100%;
+            padding: 1.25rem;
+            background-color: #F9FAFB;
+            border: 2px solid #F3F4F6;
+            border-radius: 2rem; 
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        input:focus, select:focus {
+            border-color: #5D56D1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 5px rgba(93, 86, 209, 0.15);
+        }
+
+        .btn-rounded {
+            border-radius: 2rem;
+            letter-spacing: 0.1em;
+            font-weight: 800;
+        }
+
+        /* Smooth fade transition */
+        .form-animate {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-soft-gray min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-[3rem] shadow-2xl flex flex-col lg:flex-row overflow-hidden max-w-5xl w-full min-h-[700px] transition-all hover:shadow-purple-100">
+        
+        <div class="brand-purple lg:w-1/2 p-8 lg:p-12 text-white flex flex-col justify-center relative">
+            <div class="flex items-center gap-2 mb-8">
+                <div class="bg-white p-2 rounded-xl">
+                    <svg class="w-6 h-6 text-purple" fill="currentColor" viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 0c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                </div>
+                <span class="font-extrabold tracking-[0.2em] uppercase text-sm">Shopsphere</span>
+            </div>
+            <h1 class="text-4xl lg:text-6xl font-black leading-tight mb-6 tracking-tight">
+                {% if user.is_authenticated %}Welcome Back.{% else %}Elevate Your Operations.{% endif %}
+            </h1>
+            <p class="text-lg opacity-80 leading-relaxed font-medium">The premier logistics portal tailored for modern delivery experts. Track, earn, and excel.</p>
+        </div>
+
+        <div class="lg:w-1/2 p-8 lg:p-16 flex flex-col justify-center bg-white">
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="mb-6 p-4 rounded-2xl text-sm font-bold tracking-wide {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-100{% else %}bg-green-50 text-green-600 border border-green-100{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <div class="text-center form-animate">
+                    <h1 class="text-4xl font-black text-slate-800 mb-2 tracking-tight">Hello, {{ user.username }}!</h1>
+                    <p class="text-slate-500 mb-8 font-medium">You have successfully accessed the Agent Dashboard.</p>
+                    
+                    <div class="bg-blue-50 p-6 rounded-[2rem] mb-8 border border-blue-100">
+                        <p class="text-blue-700 text-sm font-bold tracking-wide uppercase">Shift Status: Ready</p>
+                    </div>
+
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full bg-red-500 text-white py-5 btn-rounded shadow-xl hover:bg-red-600 transition transform active:scale-95 uppercase">
+                            LOGOUT
+                        </button>
+                    </form>
+                </div>
+
+            {% else %}
+                <div class="mb-10 text-center lg:text-left">
+                    <h2 id="portal-title" class="text-4xl font-black text-slate-800 mb-1 tracking-tight uppercase">Partner Portal</h2>
+                    <p class="text-[10px] tracking-[0.3em] text-slate-400 uppercase font-black">Secure Access Point</p>
+                </div>
+
+                <div class="bg-gray-100 p-1.5 rounded-full flex mb-10">
+                    <button onclick="toggleForm('signin')" id="btn-signin" class="flex-1 py-3 rounded-full font-extrabold text-xs tracking-widest transition-all brand-purple text-white">SIGN IN</button>
+                    <button onclick="toggleForm('signup')" id="btn-signup" class="flex-1 py-3 rounded-full font-extrabold text-xs tracking-widest transition-all text-slate-400">SIGN UP</button>
+                </div>
+
+                <form id="form-signin" method="POST" action="{% url 'agentLogin' %}" class="space-y-6 form-animate">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="login">
+                    {% for field in login_form %}
+                        <div>
+                            <div class="flex justify-between items-center mb-2 px-4">
+                                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{{ field.label }}</label>
+                                {% if field.name == 'password' %}
+                                    <button type="button" onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)" class="text-[10px] font-black text-purple uppercase tracking-widest focus:outline-none">Show</button>
+                                {% endif %}
+                            </div>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    <div class="text-right px-4">
+                        <a href="#" class="text-[10px] font-bold text-slate-400 hover:text-purple transition tracking-widest uppercase">Recover Password?</a>
+                    </div>
+                    <button type="submit" class="w-full brand-purple text-white py-5 btn-rounded shadow-2xl hover:opacity-90 transition transform active:scale-95 text-xs">LOG INTO DASHBOARD</button>
+                </form>
+
+                <form id="form-signup" method="POST" action="{% url 'agentRegister' %}" class="hidden space-y-4 form-animate">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="signup">
+                    <div class="max-h-[350px] overflow-y-auto px-1 space-y-4 custom-scrollbar">
+                        {% for field in signup_form %}
+                            <div>
+                                <div class="flex justify-between items-center mb-2 px-4">
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">{{ field.label }}</label>
+                                    {% if "password" in field.name %}
+                                        <button type="button" onclick="togglePasswordVisibility('{{ field.id_for_label }}', this)" class="text-[10px] font-black text-purple uppercase tracking-widest focus:outline-none">Show</button>
+                                    {% endif %}
+                                </div>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <p class="text-red-500 text-[10px] mt-2 px-4 font-bold">{{ field.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="w-full brand-purple text-white py-5 btn-rounded shadow-2xl hover:opacity-90 transition transform active:scale-95 text-xs">CREATE ACCOUNT</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Logic to handle form switching and persistence
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // This variable is populated by your Django context
+            const activeTab = "{{ active_tab }}"; 
+            if (activeTab === 'signup') {
+                toggleForm('signup');
+            }
+        });
+
+        function toggleForm(type) {
+            const signinForm = document.getElementById('form-signin');
+            const signupForm = document.getElementById('form-signup');
+            const btnSignin = document.getElementById('btn-signin');
+            const btnSignup = document.getElementById('btn-signup');
+            const portalTitle = document.getElementById('portal-title');
+
+            if (type === 'signup') {
+                signinForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                portalTitle.innerText = "Join the Fleet";
+                
+                // Button States
+                btnSignup.classList.add('brand-purple', 'text-white');
+                btnSignup.classList.remove('text-slate-400');
+                btnSignin.classList.remove('brand-purple', 'text-white');
+                btnSignin.classList.add('text-slate-400');
+            } else {
+                signupForm.classList.add('hidden');
+                signinForm.classList.remove('hidden');
+                portalTitle.innerText = "Partner Portal";
+                
+                // Button States
+                btnSignin.classList.add('brand-purple', 'text-white');
+                btnSignin.classList.remove('text-slate-400');
+                btnSignup.classList.remove('brand-purple', 'text-white');
+                btnSignup.classList.add('text-slate-400');
+            }
+        }
+
+        function togglePasswordVisibility(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerText = "Hide";
+            } else {
+                input.type = "password";
+                btn.innerText = "Show";
+            }
+        }
+    </script>
+</body>
+</html>
