@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4CAF50;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+        }
+
+        .price {
+            font-size: 1.2em;
+            color: var(--light);
+            margin: 10px 0;
+            font-weight: 300;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #5753d9;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ShopSphere</h1>
+        <div class="nav-links">
+            <a href="{% url 'my_orders' %}">My Orders</a>
+            <a href="{% url 'cart' %}" class="cart-icon">
+                Cart 🛒
+                {% if cart_count > 0 %}
+                <span class="badge">{{ cart_count }}</span>
+                {% endif %}
+            </a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="grid">
+        {% for product in products %}
+        <div class="card">
+            <div
+                style="height: 150px; background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 3em;">
+                📦
+            </div>
+            <h3>{{ product.name }}</h3>
+            <p class="price">${{ product.price }}</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="btn">Add to Cart</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

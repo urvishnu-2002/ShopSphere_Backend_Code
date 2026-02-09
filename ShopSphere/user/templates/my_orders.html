@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - ShopSphere</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4CAF50;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .order-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .order-id {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .order-items ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .order-items li {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .item-name {
+            font-weight: 500;
+        }
+
+        .item-price {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .payment-info {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>My Orders</h1>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Back to Products</a>
+        </div>
+    </header>
+
+    <div class="container">
+        {% if orders %}
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-id">Order #{{ order.id }}</span>
+                <span>{{ order.order_date|date:"F j, Y, P" }}</span>
+            </div>
+            <div class="order-items">
+                <ul>
+                    {% for item in order.items.all %}
+                    <li>
+                        <span class="item-name">{{ item.quantity }}x {{ item.product_name }}</span>
+                        <span class="item-price">${{ item.price }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="payment-info">
+                Paid via {{ order.payment_mode }}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="text-align: center; color: rgba(255,255,255,0.5); font-size: 1.5em; margin-top: 50px;">
+            No past orders found.
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

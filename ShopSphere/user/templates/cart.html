@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - ShopSphere</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4CAF50;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            color: var(--primary);
+        }
+
+        .total {
+            text-align: right;
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: var(--light);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1.1em;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #5753d9;
+            transform: scale(1.05);
+        }
+
+        .btn-continue {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-right: 15px;
+        }
+
+        .btn-continue:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .empty-msg {
+            text-align: center;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Back to Shop</a>
+        </div>
+    </header>
+
+    <div class="container">
+        {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ item.product.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+            Total: <strong>${{ total_cart_price }}</strong>
+        </div>
+
+        <div style="text-align: right; margin-top: 30px;">
+            <a href="{% url 'home' %}" class="btn btn-continue">Continue Shopping</a>
+            <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+        </div>
+        {% else %}
+        <div class="empty-msg">Your cart is empty. 🛍️</div>
+        <div style="text-align: center;">
+            <a href="{% url 'home' %}" class="btn">Start Shopping</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

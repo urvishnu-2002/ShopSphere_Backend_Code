@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ShopSphere</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4CAF50;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .summary {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-row {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+
+        select option {
+            background: var(--dark);
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-pay:hover {
+            background: #43a047;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Checkout</h2>
+        <div class="summary">
+            <div class="summary-row">
+                <span>Items</span>
+                <span>{{ items_count }}</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Total to Pay</span>
+                <span>${{ total_price }}</span>
+            </div>
+        </div>
+
+        <form action="{% url 'process_payment' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="payment_mode">Select Payment Mode</label>
+                <select name="payment_mode" id="payment_mode" required>
+                    <option value="" disabled selected>Choose a method...</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Pay">Pay (Simulate)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-pay">Pay Now</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'cart' %}" style="color: rgba(255,255,255,0.5); text-decoration: none;">Cancel</a>
+        </div>
+    </div>
+</body>
+
+</html>

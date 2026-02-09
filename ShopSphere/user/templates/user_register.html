@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+     <style>
+        body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:white;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-box{
+            text-align:center;
+        }
+
+        input{
+            width:260px;
+            padding:10px;
+            margin:6px 0;   /* small equal spacing */
+            display:block;
+        }
+
+        button{
+            width:260px;
+            padding:10px;
+            margin-top:8px;
+        }
+
+        a{
+            display:block;
+            margin-top:8px;
+            text-decoration:none;
+        }
+        </style>
+</head>
+<body>
+    <div class="form-box">
+     <h2>Register</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input name="username" placeholder="Username"><br><br>
+    <input name="email" placeholder="Email"><br><br>
+    <input name="password" type="password" placeholder="Password"><br><br>
+    <button type="submit">Register</button>
+</form>
+
+<a href="/login">Login</a>
+</div>
+</body>
+</html>
